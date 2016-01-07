@@ -20,14 +20,14 @@ class ModelTypeForm(forms.Form):
 
 
 class GraphByPointsForm(forms.Form):
-    axis_x = forms.TextField(label=u'Точки по оси Х', required=True, widget=forms.TextInput(attrs={
-        u'type': u'text',
+    axis_x = forms.CharField(label=u'Точки по оси Х', required=True, widget=forms.TextInput(attrs={
+        u'type': u'axis_x',
         u'class': u'profile-data-textbox',
         u'required': u'',
         u'data-msg-required': u'Обязательное поле'
     }))
-    axis_y = forms.TextField(label=u'Точки по оси Х', required=True, widget=forms.TextInput(attrs={
-        u'type': u'text',
+    axis_y = forms.CharField(label=u'Точки по оси Х', required=True, widget=forms.TextInput(attrs={
+        u'type': u'axis_y',
         u'class': u'profile-data-textbox',
         u'required': u'',
         u'data-msg-required': u'Обязательное поле'

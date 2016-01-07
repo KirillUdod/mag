@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Авторизация{% endblock title %}
+
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <div class="container">
+
+        <div class="row clearfix">
+            <div class="auth-form auth-login-reg grid_offset-2">
+                <h1 class="auth-form-title">Вход / Регистрация</h1>
+                <br/>
+                <form class="auth-form-col-left" method="POST"
+                      action="{% url 'sim' %}?next={{ request.path }}">{% csrf_token %}
+                    <label for="{{ login_form.email.id_for_label }}"
+                           class="auth-form-label">{{ graph_by_points_form.axis_x.label }}</label><br/>
+                    {{ graph_by_points_form.axis_x }}
+
+                    <label for="{{ login_form.password.id_for_label }}"
+                           class="auth-form-label">{{ graph_by_points_form.axis_y.label }}</label><br/>
+                    {{ graph_by_points_form.axis_y }}
+
+                    <div class="auth-form-actions">
+                        <input type="submit" value="Войти на сайт" class="auth-form-btn"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

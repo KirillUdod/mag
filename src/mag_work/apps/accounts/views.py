@@ -80,7 +80,7 @@ class RegistrationView(FormView):
 
     def form_invalid(self, form):
         data = u'%s' % [error for i, error in form.errors.items()][0]
-        print(data)
+
         return HttpResponseRedirect(self.get_redirect_url())
 
 
@@ -111,11 +111,6 @@ class LoginView(FormView):
         context[u'next'] = self.request.GET.get(u'next', u'')
         return context
 
-    def get_redirect_url(self):
-        if self.request.GET.get(u'next'):
-            return self.request.GET.get(u'next')
-        return reverse(u'core_index')
-
 
 class LogOut(View):
     def get(self, request):
@@ -143,9 +138,6 @@ class ProfileView(TemplateView):
         #         Q(payment_date__isnull=False) | Q(payment_type=Order.PAYMENT_TYPE_CASH)))
         # context[u'orders'] = orders
         return context
-
-
-
 #
 #
 # class ProfileOrdersView(TemplateView):
