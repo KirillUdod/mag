@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Авторизация{% endblock title %}
+
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <div class="container">
+        {#    <ul class="auth-form-social list_raw clearfix">#}
+        {#        <li class="auth-form-social-item"><a href="#">вход</a></li>#}
+        {#        <li class="auth-form-social-item"><a href="#">через</a></li>#}
+        {#        <li class="auth-form-social-item"><a href="#">соцсети</a></li>#}
+        {#    </ul>#}
+
+        <div class="row clearfix">
+            <div class="auth-form auth-login-reg grid_offset-2">
+                <h1 class="auth-form-title">Вход / Регистрация</h1>
+                <br/>
+                <form class="auth-form-col-left" method="POST"
+                      action="{% url 'login' %}?next={{ request.path }}">{% csrf_token %}
+                    <label for="{{ login_form.email.id_for_label }}"
+                           class="auth-form-label">{{ login_form.email.label }}</label><br/>
+                    {{ login_form.email }}
+
+                    <label for="{{ login_form.password.id_for_label }}"
+                           class="auth-form-label">{{ login_form.password.label }}</label><br/>
+                    {{ login_form.password }}
+
+                    <div class="auth-form-helpers clearfix">
+                        <a href="#auth-reminder" data-fancybox-alt class="pull-right">Забыли пароль?</a>
+                        {{ login_form.remember_me }}
+                        <label for="{{ login_form.remember_me.id_for_label }}">Запомнить</label>
+                    </div>
+
+                    <div class="auth-form-actions">
+                        <input type="submit" value="Войти на сайт" class="auth-form-btn"/>
+                    </div>
+                </form>
+                <div class="auth-form-col-right">
+                    <h3 class="auth-form-title_2">Хочу стать пользователем сайта</h3>
+
+                    <p class="auth-form-text">Регистрация на сайте даст вам возможность использования всех его функций. На
+                        сайте
+                        возможность использования всех его функций. Регистрация на сайте даст вам возможность использования
+                        функций.</p>
+
+                    <p><a href="#auth-registration" data-fancybox-alt class="auth-form-btn">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

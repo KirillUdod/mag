@@ -1,0 +1,31 @@
+{% extends 'accounts/profile/base_profile.html' %}
+{% load static %}
+
+{% block notifications-class %} catalog-menu__link_active{% endblock %}
+{% block profile-content %}
+
+<div class="container">
+    <h1 class="profile-title_1">Оповещения</h1>
+
+    <form method="POST">{% csrf_token %}
+        <ul class="profile-notifications list_raw">
+            <li class="profile-notifications-item">
+                {{ form.newsletters }}
+                <label for="{{ form.newsletters.id_for_label }}">Получать информацию о новых коллекциях и акциях
+                    МADYART</label><br/>
+            </li>
+{#            <li class="profile-notifications-item">#}
+{#                {{ form.helpful_info }}#}
+{#                <label for="{{ form.helpful_info.id_for_label }}">Получать ежемесячную <a href="#">полезную информацию</a></label>#}
+{#            </li>#}
+{#            <li class="profile-notifications-item">#}
+{#                {{ form.bonus_offers }}#}
+{#                <label for="{{ form.bonus_offers.id_for_label }}">Получать эксклюзивные <a href="#">бонусные предложения</a></label>#}
+{#            </li>#}
+        </ul>
+
+        <input class="button" type="submit" value="Сохранить" />
+    </form>
+</div>
+
+{% endblock profile-content %}

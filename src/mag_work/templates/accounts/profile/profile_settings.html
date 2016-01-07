@@ -1,0 +1,55 @@
+{% extends 'accounts/profile/base_profile.html' %}
+{% load static %}
+
+{% block settings-class %} catalog-menu__link_active{% endblock %}
+{% block profile-content %}
+
+<div class="container">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <span class="validator-error">{{ error }}</span>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <h1 class="profile-title_1">Личные данные</h1>
+
+    <form method="POST" id="profile-data-form">{% csrf_token %}
+        <div class="row clearfix">
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label><br/>
+                {{ form.first_name }}
+            </div>
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+            </div>
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.middle_name.id_for_label }}">{{ form.middle_name.label }}</label>
+                {{ form.middle_name }}
+            </div>
+        </div>
+        <br/>
+
+        <div class="row clearfix">
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                {{ form.city }}
+            </div>
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                {{ form.phone }}
+            </div>
+            <div class="grid_4">
+                <label class="profile-data-label" for="{{ form.discount_card.id_for_label }}">{{ form.discount_card.label }}</label>
+                {{ form.discount_card }}
+            </div>
+        </div>
+        <br />
+        <br />
+        <input class="button" type="submit" value="Сохранить" />
+    </form>
+</div>
+
+{% endblock profile-content %}

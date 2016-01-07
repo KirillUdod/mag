@@ -1,0 +1,10 @@
+{% extends 'newsletter/message/base_template.html' %}
+{% block title %}Регистрация на сайте{% endblock %}
+{% block message_title %}Регистрация на сайте{% endblock %}
+{% block message_content %}
+    Спасибо за регистрацию на сайте <a href="http://{{ site.domain }}">{{ site.domain }}</a>!
+    <a href="http://{{ site.domain }}{% url 'profile' %}">Личный кабинет</a>.
+
+{% endblock message_content %}
+
+{% block message_button %}{% endblock %}

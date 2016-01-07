@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Личный кабинет - MADYART{% endblock %}
+
+{% block content %}
+    <div class="catalog-menu">
+        <div class="container">
+            <ul class="catalog-menu__list list_raw clearfix">
+                <li class="catalog-menu__item"><a class="catalog-menu__link{% block cabinet-class %}{% endblock %}" href="{% url 'profile' %}">Кабинет</a></li>
+{#                <li class="catalog-menu__item"><a class="catalog-menu__link{% block orders-class %}{% endblock %}" href="{% url 'profile_orders' %}">Заказы</a></li>#}
+                <li class="catalog-menu__item"><a class="catalog-menu__link{% block settings-class %}{% endblock %}" href="{% url 'profile_settings' %}">Анкетные данные</a></li>
+{#                <li class="catalog-menu__item"><a class="catalog-menu__link{% block access-class %}{% endblock %}" href="{% url 'profile_access' %}">Данные доступа</a></li>#}
+{#                <li class="catalog-menu__item"><a class="catalog-menu__link{% block address-class %}{% endblock %}" href="{% url 'address_list' %}">Адресные данные</a></li>#}
+{#                <li class="catalog-menu__item"><a class="catalog-menu__link{% block notifications-class %}{% endblock %}" href="{% url 'profile_notifications' %}">Оповещения</a></li>#}
+{#                <li class="catalog-menu__item"><p >Бонусы: {{ request.user.account.bonus_balance }}</p></li>#}
+            </ul>
+        </div>
+    </div>
+{% block profile-content %}
+{% endblock profile-content %}
+{% endblock content %}

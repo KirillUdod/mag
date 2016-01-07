@@ -1,5 +1,13 @@
 from django.db import models
-from django.core.mail import EmailMessage
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+class AccountManager(models.Manager):
+    def create_account(self, user, first_name, last_name):
+        account = self.model(user=user, first_name=first_name, last_name=last_name)
+        account.save(using=self._db)
+        return account
 
 
 class Account(models.Model):
@@ -23,78 +31,25 @@ class Account(models.Model):
         return self.user.email
 
     def notify_on_registration(self, template_name=u'accounts/email/thanks_for_registration.html'):
-        body = render_to_string(
-            template_name,
-            {
-                u'email': self.get_email(),
-                u'token': signing.dumps(self.get_email(), salt=settings.SIGNUP_SALT),
-                u'site': Site.objects.get_current()
-            }
-        )
-        title = u'Регистрация на '
-        message = EmailMessage(
-            title,
-            body,
-            settings.EMAIL_SENDER,
-            [self.get_email().encode(u'utf-8'), ])
-        message.content_subtype = u'html'
-        message.send()
-
-    def notify_on_express_registration_via_email(self, password,
-                                                 template_name=u'accounts/email/registration_on_express_order.html'):
-        body = render_to_string(
-            template_name,
-            {
-                u'email': self.get_email(),
-                u'password': password,
-                u'site': Site.objects.get_current()
-            }
-        )
-        title = u'Регистрация на MadyArt.ru'
-        message = EmailMessage(
-            title,
-            body,
-            settings.EMAIL_SENDER,
-            [self.get_email().encode(u'utf-8'), ])
-        message.content_subtype = u'html'
-        message.send()
-
-    def notify_on_express_registration_via_sms(self, password,
-                                               template_name=u'accounts/sms/registration_on_express_order.html'):
-        content = render_to_string(
-            template_name,
-            {
-                u'password': password
-            }
-        )
-        sms_message = SMSMessage.objects.create(
-            content=content,
-            recipient=self.phone,
-            queue_type=SMSMessage.QUEUE_TYPE_REGULAR
-        )
-        send_message(sms_message)
-
-    def notify_on_email_change_request(self, template_name=u'accounts/email/change_email_request.html'):
-        body = render_to_string(
-            template_name,
-            {
-                u'email': self.get_email(),
-                u'token': signing.dumps(self.get_email(), salt=settings.SIGNUP_SALT),
-                u'site': Site.objects.get_current()
-            }
-        )
-        title = u'Изменение почтового адреса на MadyArt.ru'
-        message = EmailMessage(
-            title,
-            body,
-            settings.EMAIL_SENDER,
-            [self.get_email().encode(u'utf-8'), ])
-        message.content_subtype = u'html'
-        message.send()
+        # body = render_to_string(
+        #     template_name,
+        #     {
+        #         u'email': self.get_email(),
+        #         u'token': signing.dumps(self.get_email(), salt=settings.SIGNUP_SALT),
+        #         u'site': Site.objects.get_current()
+        #     }
+        # )
+        # title = u'Регистрация на сайте'
+        # message = EmailMessage(
+        #     title,
+        #     body,
+        #     settings.EMAIL_SENDER,
+        #     [self.get_email().encode(u'utf-8'), ])
+        # message.content_subtype = u'html'
+        # message.send()
+        return
 
     def save(self, *args, **kwargs):
-        if self.phone:
-            self.phone = clean_phone(self.phone)
         super(Account, self).save(*args, **kwargs)
 
     def __unicode__(self):

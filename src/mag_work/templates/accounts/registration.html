@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock title %}
+
+{% block content %}
+    <div class="container clearfix">
+        <div class="clearfix">
+            <div class="auth-form auth-registration grid_6 grid_offset-3">
+                <h1 class="auth-form-title">Регистрация</h1>
+                <br/>
+                {{ form.errors }}
+
+                <form method="POST" action="{% url 'registration' %}?next={{ request.path }}" data-ajax>{% csrf_token %}
+                    <label for="{{ registration_form.email.id_for_label }}"
+                           class="auth-form-label">{{ registration_form.email.label }}</label><br/>
+                    {{ registration_form.email }}
+                    <label for="id_for_label"
+                           class="auth-form-label">{{ registration_form.password.label }}</label><br/>
+                    {{ registration_form.password }}
+
+                    <label for="{{ registration_form.last_name.id_for_label }}"
+                           class="auth-form-label">{{ registration_form.last_name.label }}</label><br/>
+                    {{ registration_form.last_name }}
+
+                    <label for="{{ registration_form.first_name.id_for_label }}"
+                           class="auth-form-label">{{ registration_form.first_name.label }}</label><br/>
+                    {{ registration_form.first_name }}
+
+                    <div class="auth-form-helpers clearfix">
+                        <ul class="auth-form-helpers-list list_raw">
+                            <li class="auth-form-helpers-item">
+                                {{ registration_form.tos }}
+                                <label for="{{ registration_form.tos.id_for_label }}">Согласен (согласна) с <a
+                                        href="/media/uploads/politika_konfidentsialnosti.pdf" target="_blank">политикой конфиденциальности</a></label>
+                            </li>
+                            <li class="auth-form-helpers-item">
+                                {{ registration_form.newsletter }}
+                                <label for="{{ registration_form.newsletter.id_for_label }}">Хочу получать информацию о
+                                    новинках и скидках</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="auth-form-actions">
+                        <input type="submit" value="Зарегистрироваться" class="auth-form-btn"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

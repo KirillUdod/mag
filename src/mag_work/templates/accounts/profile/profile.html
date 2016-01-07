@@ -1,0 +1,74 @@
+{% extends 'accounts/profile/base_profile.html' %}
+{% load static %}
+
+{% block cabinet-class %} catalog-menu__link_active{% endblock %}
+{% block profile-content %}
+
+{#    <div class="container">#}
+       <h1 class="profile-title_1">{{ account.get_full_name }}</h1>
+        <div>{{ account.get_email }}</div>
+{##}
+{##}
+{#        <h2 class="profile-title_3">История заказов</h2>#}
+{#        {% if orders %}#}
+{#            <table class="profile-orders-table">#}
+{#                <thead>#}
+{#                <tr>#}
+{#                    <th>Дата</th>#}
+{#                    <th>Номер</th>#}
+{#                    <th>Статус</th>#}
+{#                    <th>Способ доставки</th>#}
+{#                    <th>Состояние оплаты</th>#}
+{#                    <th>Номер CDEK или трекинг номер</th>#}
+{#                    <th>Сумма потраченных бонусов</th>#}
+{#                    <th>Сумма начисленных бонусов</th>#}
+{#                    <th>Сумма</th>#}
+{#                </tr>#}
+{#                </thead>#}
+{##}
+{#                <tbody>#}
+{#                {% for order in orders %}#}
+{#                    <tr>#}
+{#                        <td>{{ order.date_created }}</td>#}
+{#                        <td><a href="{% url 'order_complete' order.id %}">{{ order.id }}</a></td>#}
+{#                        <td>{{ order.get_status_display }}</td>#}
+{#                        <td>{{ order.get_shipping_type_display }}</td>#}
+{#                        <td>{{ order.get_payment_status_display }}</td>#}
+{#                        <td>#}
+{#                            {{ order.shipping.ext_id }}#}
+{#                            {% if order.shipping.get_tracking_url %}#}
+{#                                <br>#}
+{#                                <a target="_blank" href="{{ order.shipping.get_tracking_url }}">Проверить</a>#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td>#}
+{#                            {% if order.get_write_off_amount %}#}
+{#                                {{ order.get_write_off_amount }}#}
+{#                            {% else %}#}
+{#                                0#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td>#}
+{#                            {% if order.get_completion_amount %}#}
+{#                                {{ order.get_completion_amount }}#}
+{#                            {% else %}#}
+{#                                0#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{#                        <td>{{ order.final_price|stringformat:".2f" }} <span class="symbol-ruble">Р</span></td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#        {% else %}#}
+{#            <p>Вы еще не оформили ни одного заказа.</p>#}
+{#        {% endif %}#}
+{##}
+        {#    <ul class="profile-orders-pager list_raw">#}
+        {#        <li class="profile-orders-pager-item"><a class="profile-orders-pager-link" href="#">Предыдущие 10</a></li>#}
+        {#        <li class="profile-orders-pager-item"><a class="profile-orders-pager-link" href="#">Следующие 10</a></li>#}
+        {#        <li class="profile-orders-pager-item"><a class="profile-orders-pager-link" href="#">Показать все</a></li>#}
+        {#    </ul>#}
+{#    </div>#}
+
+{% endblock profile-content %}

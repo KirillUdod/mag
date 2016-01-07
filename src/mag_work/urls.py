@@ -1,10 +1,16 @@
-from django.conf.urls import include, url
+# coding: utf-8
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 
-urlpatterns = [
-    # Examples:
-    # url(r'^$', 'mag_work.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+
+
+urlpatterns = patterns(
+    u'',
+    url(r'^admin/', include(admin.site.urls))
+)
+
+urlpatterns += patterns(
+    u'',
     url(r'^', include(u'core.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-]
+    url(r'^', include(u'accounts.urls')),
+)
