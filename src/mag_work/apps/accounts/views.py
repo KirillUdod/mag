@@ -211,7 +211,7 @@ class ProfileAccessView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not hasattr(self.request.user, u'account'):
-            return GOTO_FRONT_PAGE()
+            return get_redirect_url()
         return super(ProfileAccessView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -236,7 +236,6 @@ class ProfileAccessView(FormView):
             self.user.email = email
             self.user.username = email
             self.user.save()
-            self.user.account.notify_on_email_change_request()
         if password:
             self.user.set_password(password)
             self.user.save()
@@ -244,38 +243,10 @@ class ProfileAccessView(FormView):
         if email:
             logout(self.request)
             messages.success(self.request, MESSAGES['email_confirm'])
-            return GOTO_FRONT_PAGE()
+            return get_redirect_url()
         else:
             messages.success(self.request, MESSAGES['settings_updated'])
         return redirect(reverse(u'profile_access'))
-#
-#
-# class ProfileNotificationsView(FormView):
-#     template_name = u'accounts/profile/profile_notifications.html'
-#     form_class = ProfileNotificationsForm
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         if not hasattr(self.request.user, u'account'):
-#             return GOTO_FRONT_PAGE()
-#         return super(ProfileNotificationsView, self).dispatch(request, *args, **kwargs)
-#
-#     def get_initial(self):
-#         if Subscription.objects.filter(user=self.request.user).exists():
-#             self.subscribed = Subscription.objects.filter(user=self.request.user).values_list('subscribed', flat=True)[
-#                 0]
-#         else:
-#             self.subscribed = False
-#         return {
-#             u'newsletters': self.subscribed,
-#         }
-#
-#     def form_valid(self, form):
-#         letter = Newsletter.objects.get(id=1)
-#         subscription, created = Subscription.objects.get_or_create(newsletter=letter, user=self.request.user)
-#         subscription.subscribed = form.cleaned_data.get(u'newsletters')
-#         subscription.save()
-#         messages.success(self.request, MESSAGES['notifications_updated'])
-#         return redirect(reverse(u'profile_notifications'))
 
 
 def get_redirect_url(self):

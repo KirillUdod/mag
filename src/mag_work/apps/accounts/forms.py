@@ -52,6 +52,11 @@ class RegistrationForm(forms.Form):
         u'data-msg-minlength': u'Не менее 6 символов',
     }))
 
+    tos = forms.BooleanField(widget=forms.CheckboxInput(attrs={
+        u'required': u'',
+        u'data-msg-required': u'Обязательное поле',
+    }))
+
     def clean_email(self):
         if User.objects.filter(email__iexact=self.cleaned_data[u'email']).exists():
             raise forms.ValidationError(u'Данный почтовый ящик уже используется')
