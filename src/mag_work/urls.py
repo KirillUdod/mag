@@ -13,5 +13,5 @@ urlpatterns += patterns(
     u'',
     url(r'^', include(u'core.urls')),
     url(r'^', include(u'accounts.urls')),
-    url(r'^', include(u'simulation.urls')),
+    url(r'^simmod/', include(u'simulation.urls')),
 )

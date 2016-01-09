@@ -7,7 +7,8 @@ from simulation.views import GraphByPointsView, ModelTypeView
 urlpatterns = patterns(
     u'accounts.views',
 
-    url(r'^simmod/$', ModelTypeView.as_view(), name=u'sim'),
+    url(r'^$', ModelTypeView.as_view(), name=u'sim'),
+    url(r'^gbp/$', GraphByPointsView.as_view(), name=u'graph by points')
 
     # url(r'^login/$', LoginView.as_view(), name=u'login'),
     # url(r'^logout/$', LogOut.as_view(), name=u'logout'),

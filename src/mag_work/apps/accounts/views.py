@@ -18,7 +18,7 @@ from django.views.generic import FormView, View, TemplateView
 
 from accounts.forms import RegistrationForm, LoginForm, ProfileAccessForm, ProfileSettingsForm
 from accounts.models import Account
-from simulation.models import SimModel
+from simulation.models import SimModel, ModelType
 
 User = get_user_model()
 
@@ -164,7 +164,7 @@ class ProfileSettingsView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not hasattr(self.request.user, u'account'):
-            return get_redirect_url()
+            return self.get_redirect_url()
         return super(ProfileSettingsView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -257,6 +257,10 @@ class ProfileModelsListView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileModelsListView, self).get_context_data(**kwargs)
         models = SimModel.objects.filter(Q(account=self.request.user.account))
+        for model in models:
+            # id = model.type_id.
+            # t = ModelType.objects.get(mod_id=id)
+            model.name = model.type_id.name
         context[u'models'] = models
         return context
 
