@@ -19,6 +19,9 @@ class ModelType(models.Model):
     name = models.TextField(max_length=50, verbose_name=u'Название модели')
     description = models.TextField(max_length=255, verbose_name=u'Описание модели')
 
+    def get_name(self):
+        return self.name
+
     class Meta:
         verbose_name = u'Тип модели'
         verbose_name_plural = u'Типы моделей'

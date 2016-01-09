@@ -3,32 +3,13 @@ from pylab import *
 
 import PIL
 import PIL.Image
-from io import StringIO
+import io
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import FormView, View, TemplateView
 
-from simulation.models import SimModel
-from simulation.forms import GraphByPointsForm
-
-# def graph(request):
-#     x = [1,2,3,4,5,6]
-#     y = [5,23,23,4,5]
-#     plot(x,y, linewidth=2)
-#
-#     xlabel('x axis')
-#     ylabel('y axis')
-#     title('graph')
-#     grid(True)
-#
-#     buffer = StringIO.StringIO()
-#     canvas = pylab.get_current_fig_manager().canvas
-#     canvas.draw()
-#     graphIMG = PIL.Image.foromstring("RGB", canvas.gat.width_height(), canvas.tostring_rgd())
-#     graphIMG.save(buffer, "PNG")
-#     pylab.close()
-#
-#     return HttpResponse(buffer.getValue(), mimetype='image/png')
+from simulation.models import SimModel, ModelType
+from simulation.forms import GraphByPointsForm, ModelTypeForm
 
 
 class GraphByPointsView(FormView):
@@ -38,8 +19,9 @@ class GraphByPointsView(FormView):
     def form_valid(self, form):
         x = form.cleaned_data[u'axis_x']
         y = form.cleaned_data[u'axis_y']
+
         x = x.split(', ')
-        y = x.split(', ')
+        y = y.split(', ')
         plot(x, y, linewidth=2)
 
         xlabel('x axis')
@@ -47,18 +29,31 @@ class GraphByPointsView(FormView):
         title('graph')
         grid(True)
 
-        buffer = StringIO.StringIO()
+        buffer = str(io.StringIO())
         canvas = pylab.get_current_fig_manager().canvas
         canvas.draw()
-        graphIMG = PIL.Image.foromstring("RGB", canvas.gat.width_height(), canvas.tostring_rgd())
+        graphIMG = PIL.Image.fromstring("RGB", canvas.get_width_height(), canvas.tostring_rgb())
         graphIMG.save(buffer, "PNG")
+        # return HttpResponse(buffer,  content_type="image/png")
+        # SimModel.objects.create(account=request.user.id,
+        #                         type_id=u'GraphByPoints',
+        #                         result_img=buffer)
+        # Sim_Model.save()
 
-        SimModel.objects.create(account=request.user.id,
-                                type_id=u'GraphByPoints',
-                                result_img=buffer)
-        Sim_Model.save()
 
-    def get_context_data(self, **kwargs):
-        context = super(GraphByPointsView, self).get_context_data(**kwargs)
-        context[u'next'] = self.request.GET.get(u'next', u'')
-        return context
+class ModelTypeView(FormView):
+    template_name = u'simulation/chose_mod_type.html'
+    form_class = ModelTypeForm
+
+    def get_initial(self):
+        print(ModelType.objects.all())
+        return {u'models': ModelType.objects.all()}
+
+    def form_valid(self, form):
+        answer = form.cleaned_data[u'value']
+        return redirect(reverse(u'profile_access'))
+
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')

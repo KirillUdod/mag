@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Тип моделирования{% endblock title %}
+
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <div class="container">
+
+        <div class="row clearfix">
+            <div class="auth-form auth-login-reg grid_offset-2">
+                <h1 class="auth-form-title">Выберите тип моделирования</h1>
+                <br/>
+                <form class="auth-form-col-left" method="POST"
+                      action="{% url 'sim' %}">{% csrf_token %}
+                    {% if models %}
+                       {{ models }}
+{#                        <select>#}
+{#                            <option selected="selected" disabled>Types:</option>#}
+{#                            {% for mod in models %}#}
+{#                                <option value="{{ mod.mod_id }}">{{ mod.name }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+                    {%  endif %}
+                    <input type="submit" value="Далее" class="auth-form-btn"/>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

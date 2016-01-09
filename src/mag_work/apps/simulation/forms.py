@@ -11,12 +11,18 @@ from django.template import loader
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.forms import AuthenticationForm
+from django.forms import ModelChoiceField
 
 from simulation.models import ModelType
 
 
+class UserModelChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+         return obj.get_name()
+
+
 class ModelTypeForm(forms.Form):
-    type = forms.ModelChoiceField(queryset=ModelType.objects.all().order_by('name'))
+    type = UserModelChoiceField(queryset=ModelType.objects.all().order_by('name'), required = False)
 
 
 class GraphByPointsForm(forms.Form):

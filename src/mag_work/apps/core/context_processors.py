@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 
 from accounts.forms import LoginForm, RegistrationForm
-from simulation.forms import GraphByPointsForm
+from simulation.forms import GraphByPointsForm, ModelTypeForm
 
 
 def auth_forms(request):
@@ -14,4 +14,5 @@ def auth_forms(request):
         u'login_form': LoginForm(),
         u'registration_form': RegistrationForm(),
         u'graph_by_points_form': GraphByPointsForm(),
+        u'models': ModelTypeForm()
     }

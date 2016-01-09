@@ -1,13 +1,13 @@
 # coding: utf-8
 from django.conf.urls import patterns, url
 
-from simulation.views import GraphByPointsView
+from simulation.views import GraphByPointsView, ModelTypeView
 
 
 urlpatterns = patterns(
     u'accounts.views',
 
-    url(r'^simmod/$', GraphByPointsView.as_view(), name=u'sim'),
+    url(r'^simmod/$', ModelTypeView.as_view(), name=u'sim'),
 
     # url(r'^login/$', LoginView.as_view(), name=u'login'),
     # url(r'^logout/$', LogOut.as_view(), name=u'logout'),

@@ -18,6 +18,7 @@ from django.views.generic import FormView, View, TemplateView
 
 from accounts.forms import RegistrationForm, LoginForm, ProfileAccessForm, ProfileSettingsForm
 from accounts.models import Account
+from simulation.models import SimModel
 
 User = get_user_model()
 
@@ -63,7 +64,7 @@ class RegistrationView(FormView):
         if user:
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(self.request, user)
-            return HttpResponseRedirect(self.get_redirect_url())
+            return HttpResponseRedirect(reverse(u'profile'))
         else:
             messages.warning(self.request, MESSAGES['unknown_error'])
             return HttpResponseRedirect(self.get_redirect_url())
@@ -82,6 +83,12 @@ class RegistrationView(FormView):
         data = u'%s' % [error for i, error in form.errors.items()][0]
 
         return HttpResponseRedirect(self.get_redirect_url())
+
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')
+
 
 
 class LoginView(FormView):
@@ -111,6 +118,12 @@ class LoginView(FormView):
         context[u'next'] = self.request.GET.get(u'next', u'')
         return context
 
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')
+
+
 
 class LogOut(View):
     def get(self, request):
@@ -138,31 +151,13 @@ class ProfileView(TemplateView):
         #         Q(payment_date__isnull=False) | Q(payment_type=Order.PAYMENT_TYPE_CASH)))
         # context[u'orders'] = orders
         return context
-#
-#
-# class ProfileOrdersView(TemplateView):
-#     template_name = u'accounts/profile/profile_orders.html'
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         if not hasattr(self.request.user, u'account'):
-#             return HttpResponseRedirect(self.get_redirect_url())
-#         return super(ProfileOrdersView, self).dispatch(request, *args, **kwargs)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(ProfileOrdersView, self).get_context_data(**kwargs)
-#         orders = Order.objects.filter(
-#             Q(cart__checked_out=True) &
-#             Q(account=self.request.user.account) & (
-#                 Q(payment_date__isnull=False) | Q(payment_type=Order.PAYMENT_TYPE_CASH)))
-#         context[u'orders'] = orders
-#         return context
-#
-#     def get_redirect_url(self):
-#         if self.request.GET.get(u'next'):
-#             return self.request.GET.get(u'next')
-#         return reverse(u'core_index')
-#
-#
+
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')
+
+
 class ProfileSettingsView(FormView):
     template_name = u'accounts/profile/profile_settings.html'
     form_class = ProfileSettingsForm
@@ -195,6 +190,11 @@ class ProfileSettingsView(FormView):
         self.account.save()
         messages.success(self.request, MESSAGES['settings_updated'])
         return redirect(reverse(u'profile_settings'))
+
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')
 
 
 class ProfileAccessView(FormView):
@@ -240,8 +240,24 @@ class ProfileAccessView(FormView):
             messages.success(self.request, MESSAGES['settings_updated'])
         return redirect(reverse(u'profile_access'))
 
+    def get_redirect_url(self):
+        if self.request.GET.get(u'next'):
+            return self.request.GET.get(u'next')
+        return reverse(u'core_index')
 
-def get_redirect_url(self):
-    if self.request.GET.get(u'next'):
-        return self.request.GET.get(u'next')
-    return reverse(u'core_index')
+
+class ProfileModelsListView(TemplateView):
+    template_name = u'accounts/profile/profile_models_list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not hasattr(self.request.user, u'account'):
+            return HttpResponseRedirect(reverse(u'core_index'))
+        return super(ProfileModelsListView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileModelsListView, self).get_context_data(**kwargs)
+        models = SimModel.objects.filter(Q(account=self.request.user.account))
+        context[u'models'] = models
+        return context
+
+

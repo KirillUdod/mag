@@ -1,4 +1,4 @@
-{% load static  %}
+{% load static base_extras %}
 <!DOCTYPE html>
 <html class="no-js" lang="ru">
 <head>
@@ -6,9 +6,45 @@
     <title>{% block title %}Magi work{% endblock %}</title>
 </head>
 <body>
+<div class="page-wrapper">
+     <header class="header">
+            <div class="header__toolbar">
+                <div class="container clearfix">
+                    <div class="header-rest-container">
+                        <ul class="header-account clearfix list_raw clearfix">
+                            {% if user.is_anonymous %}
+                                {% check_urls 'LOGIN' as login_urls %}
+                                {% if not login_urls %}
+                                    <li class="header-account-item">
+                                        <a class="header-account-link header-account-link_login"
+                                           href="{% url 'login' %}">Войти на сайт</a>
+                                    </li>
+                                {% endif %}
+                                {% check_urls 'REGISTER' as register_urls %}
+                                {% if not register_urls %}
+                                    <li class="header-account-item">
+                                        <a class="header-account-link header-account-link_registration"
+                                            href="{% url 'login' %}">Зарегистрироваться</a>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li class="header-account-item"><a class="header-account-link header-account-link_account"
+                                                                   href="{% url 'profile' %}">Личный кабинет</a></li>
+                                <li class="header-account-item"><a class="header-account-link header-account-link_logout"
+                                                                   href="{% url 'logout' %}">Выйти</a></li>
+                            {% endif %}
+                        </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+     </header>
+
+
     <main class="main">
         {% block content %}
         {% endblock content %}
     </main>
+</div>
 </body>
 </html>
